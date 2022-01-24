@@ -8,6 +8,7 @@ Directory Traversal 공격에 성공할 시, 공격자는 파일 시스템의 �
 */
 
 // Noncompliant Code Example
+// zipFile: 사용자로부터 입력받은 ZIP 아카이브 파일
 public static List<String> zipSlipNoncompliant(ZipFile zipFile) throws IOException {
   Enumeration<? extends ZipEntry> entries = zipFile.entries();
   List<String> filesContent = new ArrayList<>();
@@ -23,6 +24,8 @@ public static List<String> zipSlipNoncompliant(ZipFile zipFile) throws IOExcepti
 }
 
 // Compliant Solution
+// zipFile: 사용자로부터 입력받은 ZIP 아카이브 파일
+// targetDirectory: 원래 ZIP 아카이브가 풀리기 위한 디렉터리 위치 값
 // 정확한 targetDirectory를 입력받은 후, 입력받은 값과 Extract된 파일의 경로 값과 동일한지 검증하는 로직을 추가해야 한다.
 public static List<String> zipSlipCompliant(ZipFile zipFile, String targetDirectory) throws IOException {
   Enumeration<? extends ZipEntry> entries = zipFile.entries();
