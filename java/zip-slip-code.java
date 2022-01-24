@@ -1,3 +1,13 @@
+/*
+취약점 개요
+
+zip 아카이브에 있는 파일 이름은 입력 값 및 유효성 검증이 필요하다. 
+실제로 파일 이름에 '../' 와 같은 Directory Traversal 공격 페이로드가 포함될 시 사용자가 접근할 수 없는 파일 시스템 경로에 접근할 위험성이 존재한다. 
+
+Directory Traversal 공격에 성공할 시, 공격자는 파일 시스템의 중요한 정보를 Read/Update/Delete 등 가능하며 때로는 RCE로 이어질 수 있다.
+
+*/
+
 // Noncompliant Code Example
 public static List<String> zipSlipNoncompliant(ZipFile zipFile) throws IOException {
   Enumeration<? extends ZipEntry> entries = zipFile.entries();
