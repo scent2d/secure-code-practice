@@ -15,7 +15,6 @@ def index():
     module = request.args.get("module")
     exec("import urllib%s as urllib" % module) # Noncompliant
 
-
 # Compliant Solution
 from flask import request
 
