@@ -19,7 +19,7 @@ public class SecurityConfig exntends WebSecurityConfigurerAdapter {
 		.and()
 		.addFilter(corsFilter) // @CrossOrigin(인증X), 시큐리티 필터에 등록 인증(O)
 		.formLogin().disable()
-		.httpBasic().disable()
+		.httpBasic().disable() // 
 		.authorizeRequests()
 		.antMatchers("/api/v1/user/**")
 		.access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN') or hasRole('ROLE_MANAGER')")
@@ -47,3 +47,23 @@ public class CorsConfig {
 		return new CorsFilter(source);
 	}
 }
+
+
+
+// JWT 인증방식
+String jwtToken = request.getHeader("Authorization").replace("Bearer ", "");
+
+// jwtToken에서 username 클레임의 값을 뽑아서 변수 설정
+String username = JWT.require(Algorithm.HMAC512("key")).build().verify(jwtToken).getClaim("username").asString();
+
+if(username != null) {
+	// username 확인
+	User userEntity = userRepository.findByUsername(username);
+
+	PrincipalDetails principalDetails = new PrincipalDetails(userEntity);
+	Authentication authentication = new UserNamePasswordAuthenticationToken(principalDetails, null,principalDetails.getAuthorities());
+
+	// 강제로 시큐리티 세션에 접근하여 Authentication 객체를 저장.
+	SecurityContextHolder.getContext().setAuthentication(authentication);
+}
+
